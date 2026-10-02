@@ -1,0 +1,184 @@
+:root {
+  --ink: #16233f;        /* deep civic indigo - headers, primary text */
+  --ink-soft: #4b5875;   /* secondary text on paper */
+  --paper: #eef0ea;      /* cool paper background, not warm cream */
+  --paper-raised: #ffffff;
+  --marigold: #d9822b;   /* accent - marigold/saffron, counters & CTAs */
+  --marigold-deep: #b5661a;
+  --stamp-red: #a8382c;  /* used sparingly, like an official stamp */
+  --line: #c9cdbd;       /* hairline dividers */
+  --good: #2f6d4f;
+  --good-bg: #e4efe7;
+  --warn-bg: #fbeadb;
+  --bad: #a8382c;
+  --bad-bg: #f6e4e1;
+
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, monospace;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root { min-height: 100vh; display: flex; flex-direction: column; }
+
+h1, h2, h3, .display {
+  font-family: var(--font-display);
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+a { color: inherit; }
+
+button, input, select, textarea { font-family: inherit; font-size: 1rem; }
+
+.container {
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ---- Buttons ---- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  border-radius: 4px;
+  padding: 12px 22px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.btn-primary { background: var(--marigold); color: #1a1206; }
+.btn-primary:hover { background: var(--marigold-deep); }
+.btn-outline { background: transparent; border: 1.5px solid var(--ink); color: var(--ink); }
+.btn-outline:hover { background: var(--ink); color: var(--paper); }
+.btn-ghost { background: transparent; color: var(--ink-soft); padding: 8px 12px; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+@media (prefers-reduced-motion: reduce) {
+  .btn, .card, .perforation-edge { transition: none !important; animation: none !important; }
+}
+
+/* ---- Cards ---- */
+.card {
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 24px;
+}
+
+/* ---- Form fields ---- */
+.field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; }
+.field label { font-weight: 600; font-size: 0.9rem; color: var(--ink); }
+.field .hint { font-size: 0.8rem; color: var(--ink-soft); }
+.field input,
+.field select,
+.field textarea {
+  border: 1.5px solid var(--line);
+  border-radius: 4px;
+  padding: 11px 12px;
+  background: #fff;
+  color: var(--ink);
+}
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--ink);
+}
+
+/* ---- Status badges ---- */
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  text-transform: capitalize;
+}
+.badge-received, .badge-submitted { background: var(--warn-bg); color: var(--marigold-deep); }
+.badge-in_progress { background: var(--warn-bg); color: var(--marigold-deep); }
+.badge-completed, .badge-verified { background: var(--good-bg); color: var(--good); }
+.badge-rejected, .badge-failed { background: var(--bad-bg); color: var(--bad); }
+.badge-pending, .badge-awaiting_documents { background: #eceee6; color: var(--ink-soft); }
+
+/* ---- The "token slip" signature element ---- */
+.token-slip {
+  position: relative;
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 28px 26px;
+  font-family: var(--font-mono);
+  color: var(--ink);
+  box-shadow: 0 18px 40px -24px rgba(22, 35, 63, 0.35);
+}
+.token-slip::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 24px;
+  right: 24px;
+  height: 20px;
+  background-image: radial-gradient(circle 5px, var(--paper) 5px, transparent 5.5px);
+  background-size: 20px 20px;
+  background-repeat: repeat-x;
+  background-position: center;
+}
+.token-slip .slip-label {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.token-slip .slip-ref {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--stamp-red);
+  margin: 4px 0 14px;
+}
+
+code, .mono { font-family: var(--font-mono); }
+.top-marquee {
+  width: 100%;
+  background: linear-gradient(90deg, #0b3d91, #1d4ed8);
+  color: white;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 10px 0;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.top-marquee-content {
+  display: inline-block;
+  padding-left: 100%;
+  animation: scrollText 22s linear infinite;
+}
+
+@keyframes scrollText {
+  0% {
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
+}
