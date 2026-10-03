@@ -7,19 +7,24 @@ import { api } from "../api";
 export default function Home() {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    // Check if mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    // Fetch services
     api
       .getServices()
-      .then((data) => {
-        setServices(data);
-      })
-      .catch((err) => {
-        console.error("Failed to load services:", err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      .then((data) => setServices(data))
+      .catch((err) => console.error("Failed to load services:", err))
+      .finally(() => setLoading(false));
+
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   return (
@@ -28,16 +33,14 @@ export default function Home() {
       <section
         style={{
           backgroundImage: `
-            linear-gradient(
-              rgba(0,0,0,0.65),
-              rgba(0,0,0,0.65)
-            ),
+            linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
             url(${heroBg})
           `,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
-          minHeight: "100vh",
+          minHeight: isMobile ? "auto" : "100vh",
+          padding: isMobile ? "30px 0 40px" : "0",
           display: "flex",
           alignItems: "center",
         }}
@@ -46,10 +49,10 @@ export default function Home() {
           className="container"
           style={{
             display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "50px",
+            gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+            gap: isMobile ? "30px" : "50px",
             alignItems: "center",
-            padding: "60px 20px",
+            padding: isMobile ? "20px 16px" : "60px 20px",
           }}
         >
           {/* Left Side */}
@@ -59,6 +62,8 @@ export default function Home() {
                 color: "#ff9900",
                 fontWeight: "bold",
                 letterSpacing: "2px",
+                fontSize: isMobile ? "12px" : "14px",
+                margin: "0 0 12px",
               }}
             >
               COMMON SERVICE CENTRE (CSC)
@@ -66,10 +71,10 @@ export default function Home() {
 
             <h1
               style={{
-                fontSize: "55px",
+                fontSize: isMobile ? "32px" : "55px",
                 color: "white",
-                marginBottom: "20px",
-                lineHeight: "1.2",
+                marginBottom: isMobile ? "14px" : "20px",
+                lineHeight: "1.15",
               }}
             >
               MAYANK DIGITAL <br /> STUDIO
@@ -78,7 +83,9 @@ export default function Home() {
             <h3
               style={{
                 color: "white",
-                marginBottom: "20px",
+                marginBottom: isMobile ? "14px" : "20px",
+                fontSize: isMobile ? "16px" : "22px",
+                lineHeight: 1.4,
               }}
             >
               All Government & Online Services Under One Roof
@@ -87,8 +94,8 @@ export default function Home() {
             <p
               style={{
                 color: "#f0f0f0",
-                lineHeight: "30px",
-                fontSize: "17px",
+                lineHeight: isMobile ? "24px" : "30px",
+                fontSize: isMobile ? "14px" : "17px",
               }}
             >
               PAN Card, Aadhaar Card, Passport, Voter ID, Ration Card,
@@ -96,12 +103,20 @@ export default function Home() {
               Colour Print, Xerox, Lamination and many more services.
             </p>
 
-            <div style={{ marginTop: "30px" }}>
+            <div
+              style={{
+                marginTop: isMobile ? "20px" : "30px",
+                display: "flex",
+                flexDirection: isMobile ? "column" : "row",
+                gap: "12px",
+              }}
+            >
               <Link
                 to="/services"
                 className="btn btn-primary"
                 style={{
-                  marginRight: "15px",
+                  textAlign: "center",
+                  textDecoration: "none",
                 }}
               >
                 Browse Services
@@ -116,6 +131,7 @@ export default function Home() {
                   padding: "12px 25px",
                   borderRadius: "8px",
                   textDecoration: "none",
+                  textAlign: "center",
                 }}
               >
                 Track Application
@@ -127,7 +143,7 @@ export default function Home() {
           <div
             style={{
               background: "rgba(255,255,255,0.95)",
-              padding: "30px",
+              padding: isMobile ? "24px 20px" : "30px",
               borderRadius: "20px",
               textAlign: "center",
               boxShadow: "0 10px 25px rgba(0,0,0,.25)",
@@ -138,31 +154,39 @@ export default function Home() {
               src={owner}
               alt="Owner"
               style={{
-                width: "180px",
-                height: "180px",
+                width: isMobile ? "130px" : "180px",
+                height: isMobile ? "130px" : "180px",
                 borderRadius: "50%",
                 objectFit: "cover",
                 border: "5px solid #0b3d91",
               }}
             />
 
-            <h2 style={{ color: "#0b3d91" }}>
+            <h2
+              style={{
+                color: "#0b3d91",
+                fontSize: isMobile ? "20px" : "26px",
+                marginTop: "14px",
+              }}
+            >
               Ashish Kumar Singh
             </h2>
 
-            <p style={{ color: "gray" }}>
+            <p style={{ color: "gray", fontSize: isMobile ? "13px" : "15px" }}>
               Owner - Mayank Digital Studio
             </p>
 
             <hr />
 
-            <p>
+            <p style={{ fontSize: isMobile ? "14px" : "16px", lineHeight: 1.5 }}>
               📍 Chandapur Market, Jayapur,
               <br />
               Varanasi, Uttar Pradesh
             </p>
 
-            <p>📞 8574851039</p>
+            <p style={{ fontSize: isMobile ? "14px" : "16px" }}>
+              📞 8574851039
+            </p>
 
             <a
               href="https://wa.me/918574851039"
@@ -188,13 +212,13 @@ export default function Home() {
       <section
         className="container"
         style={{
-          padding: "60px 24px",
+          padding: isMobile ? "40px 16px" : "60px 24px",
         }}
       >
         <h2
           style={{
             textAlign: "center",
-            fontSize: "2rem",
+            fontSize: isMobile ? "1.5rem" : "2rem",
             marginBottom: "30px",
             color: "#0b3d91",
           }}
@@ -216,8 +240,9 @@ export default function Home() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns:
-                "repeat(auto-fit, minmax(250px, 1fr))",
+              gridTemplateColumns: isMobile
+                ? "1fr"
+                : "repeat(auto-fit, minmax(250px, 1fr))",
               gap: "20px",
             }}
           >
@@ -237,13 +262,14 @@ export default function Home() {
       <section
         className="container"
         style={{
-          padding: "20px 20px 70px",
+          padding: isMobile ? "20px 16px 50px" : "20px 20px 70px",
         }}
       >
         <h2
           style={{
             textAlign: "center",
             color: "#0b3d91",
+            fontSize: isMobile ? "1.5rem" : "2rem",
           }}
         >
           How it Works
@@ -252,8 +278,9 @@ export default function Home() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns:
-              "repeat(auto-fit, minmax(220px,1fr))",
+            gridTemplateColumns: isMobile
+              ? "1fr"
+              : "repeat(auto-fit, minmax(220px, 1fr))",
             gap: "20px",
             marginTop: "30px",
           }}
@@ -263,19 +290,16 @@ export default function Home() {
             title="Choose Service"
             text="Select the service you need."
           />
-
           <Box
             no="2"
             title="Upload Documents"
             text="Upload required documents."
           />
-
           <Box
             no="3"
             title="Pay Online"
             text="Pay securely using UPI."
           />
-
           <Box
             no="4"
             title="Collect Work"
@@ -292,7 +316,7 @@ function ServiceBox({ title, price, slug }) {
     <div
       style={{
         background: "#fff",
-        padding: "25px",
+        padding: "22px",
         borderRadius: "15px",
         textAlign: "center",
         boxShadow: "0 5px 15px rgba(0,0,0,.1)",
@@ -301,13 +325,14 @@ function ServiceBox({ title, price, slug }) {
         justifyContent: "space-between",
       }}
     >
-      <h3 style={{ minHeight: "50px" }}>{title}</h3>
+      <h3 style={{ minHeight: "50px", fontSize: "1.05rem" }}>{title}</h3>
 
       <p
         style={{
           fontSize: "20px",
           fontWeight: "bold",
           color: "#0b3d91",
+          margin: "10px 0",
         }}
       >
         {price}
@@ -319,6 +344,7 @@ function ServiceBox({ title, price, slug }) {
         style={{
           marginTop: "10px",
           display: "inline-block",
+          textDecoration: "none",
         }}
       >
         Apply Now
@@ -331,18 +357,16 @@ function Box({ no, title, text }) {
   return (
     <div
       style={{
-        padding: "25px",
+        padding: "22px",
         background: "#fff",
         borderRadius: "15px",
         boxShadow: "0 5px 15px rgba(0,0,0,.1)",
         textAlign: "center",
       }}
     >
-      <h1 style={{ color: "#ff6600" }}>{no}</h1>
-
-      <h3>{title}</h3>
-
-      <p>{text}</p>
+      <h1 style={{ color: "#ff6600", fontSize: "2rem" }}>{no}</h1>
+      <h3 style={{ fontSize: "1.1rem" }}>{title}</h3>
+      <p style={{ fontSize: "0.95rem" }}>{text}</p>
     </div>
   );
 }
