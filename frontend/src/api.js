@@ -51,6 +51,16 @@ export const api = {
       body: JSON.stringify({ username, password }),
     }).then(handle),
 
+  adminChangePassword: (token, currentPassword, newPassword) =>
+    fetch(`${API_URL}/api/admin/password`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ currentPassword, newPassword }),
+    }).then(handle),
+
   adminGetApplications: (token, params = {}) => {
     const qs = new URLSearchParams(params).toString();
     return fetch(`${API_URL}/api/applications${qs ? `?${qs}` : ""}`, {

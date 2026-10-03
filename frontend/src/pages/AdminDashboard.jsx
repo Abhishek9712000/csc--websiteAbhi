@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import API_URL, { api } from "../api";
 
 // Status options with labels
@@ -19,6 +20,8 @@ const PAYMENT_OPTIONS = [
 ];
 
 export default function AdminDashboard({ token, onLogout }) {
+  const navigate = useNavigate();
+
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -47,7 +50,6 @@ export default function AdminDashboard({ token, onLogout }) {
         status: newStatus,
       });
 
-      // Update local state
       setApplications((prev) =>
         prev.map((a) => (a._id === appId ? { ...a, ...updated } : a))
       );
@@ -140,9 +142,27 @@ export default function AdminDashboard({ token, onLogout }) {
           Admin Dashboard
         </h1>
 
-        <button className="btn btn-primary" onClick={onLogout}>
-          Logout
-        </button>
+        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+          <button
+            onClick={() => navigate("/admin/change-password")}
+            style={{
+              padding: "10px 18px",
+              border: "1.5px solid #0b3d91",
+              background: "#fff",
+              color: "#0b3d91",
+              borderRadius: 6,
+              cursor: "pointer",
+              fontWeight: 600,
+              fontSize: "0.9rem",
+            }}
+          >
+            🔒 Change Password
+          </button>
+
+          <button className="btn btn-primary" onClick={onLogout}>
+            Logout
+          </button>
+        </div>
       </div>
 
       {/* Stats */}
@@ -269,7 +289,7 @@ export default function AdminDashboard({ token, onLogout }) {
                 </p>
               )}
 
-              {/* ============ STATUS UPDATE SECTION ============ */}
+              {/* STATUS UPDATE SECTION */}
               <div
                 style={{
                   marginTop: 20,
@@ -281,7 +301,6 @@ export default function AdminDashboard({ token, onLogout }) {
                   gap: 12,
                 }}
               >
-                {/* Work Status */}
                 <div>
                   <label
                     style={{
@@ -317,7 +336,6 @@ export default function AdminDashboard({ token, onLogout }) {
                   </select>
                 </div>
 
-                {/* Payment Status */}
                 <div>
                   <label
                     style={{

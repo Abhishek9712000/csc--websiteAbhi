@@ -13,6 +13,7 @@ import Payment from "./pages/Payment";
 import Track from "./pages/Track";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
+import ChangePassword from "./pages/ChangePassword";
 
 export default function App() {
   const [token, setToken] = useState(
@@ -48,6 +49,7 @@ export default function App() {
           <Route path="/pay" element={<Payment />} />
           <Route path="/track" element={<Track />} />
 
+          {/* Admin Login */}
           <Route
             path="/admin"
             element={
@@ -59,11 +61,27 @@ export default function App() {
             }
           />
 
+          {/* Admin Dashboard */}
           <Route
             path="/admin/dashboard"
             element={
               token ? (
                 <AdminDashboard
+                  token={token}
+                  onLogout={handleLogout}
+                />
+              ) : (
+                <Navigate to="/admin" replace />
+              )
+            }
+          />
+
+          {/* Change Password */}
+          <Route
+            path="/admin/change-password"
+            element={
+              token ? (
+                <ChangePassword
                   token={token}
                   onLogout={handleLogout}
                 />
